@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 
 require 'json'
-require 'pp'
 
 def main(json)
   files = JSON.parse(json).fetch('files')
