@@ -21,10 +21,12 @@ end
 
 def files_by_key(files)
   files.inject({}) do |h, file|
-    key = get_key(file)
-    list = h.fetch(key, [])
-    list << file
-    h[key] = list
+    if file['size'] > 0
+      key = get_key(file)
+      list = h.fetch(key, [])
+      list << file
+      h[key] = list
+    end
     h
   end
 end
