@@ -1,10 +1,12 @@
 #!/usr/bin/env ruby
 
+require 'bundler/setup'
 require 'digest/sha1'
 require 'json'
+require 'ruby-progressbar'
 
 class Auditor
-  attr_reader :root
+  attr_reader :root, :progress_bar
 
   BYTES_TO_HASH = 1_000_000
 
@@ -17,7 +19,10 @@ class Auditor
   end
 
   def report
-    files = get_filenames.map {|f| filedata(f)}
+    names = get_filenames
+    $stderr.puts
+    @progress_bar = ProgressBar.create(title: 'Hashing', total: names.length, output: $stderr)
+    files = names.map {|f| filedata(f)}
     $stderr.puts
     {
       root: root,
@@ -29,14 +34,16 @@ class Auditor
   private
 
   def get_filenames
+    $stderr.puts
     $stderr.puts "getting filenames..."
+    $stderr.puts
     Dir.glob("#{root}/**/*")
       .find_all {|f| FileTest.file?(f)}
       .reject {|f| IGNORE_FILE_PATTERNS.find {|rexp| rexp.match(f)}}
   end
 
   def filedata(filepath)
-    $stderr.print '.'
+    progress_bar.increment
     bytes = File.read(filepath, BYTES_TO_HASH)
     {
       path: filepath,
