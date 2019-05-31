@@ -10,6 +10,7 @@ IGNORE_FILE_PATTERNS = [
 
 def main(root)
   files = get_file_data(root)
+  $stderr.puts
   {
     root: root,
     timestamp: Time.now,
@@ -22,6 +23,7 @@ def get_file_data(root)
 end
 
 def filedata(filepath)
+  $stderr.print '.'
   bytes = File.read(filepath, BYTES_TO_HASH)
   {
     path: filepath,
@@ -32,6 +34,7 @@ def filedata(filepath)
 end
 
 def get_filenames(root)
+  $stderr.puts "getting filenames..."
   Dir.glob("#{root}/**/*")
     .find_all {|f| FileTest.file?(f)}
     .reject {|f| IGNORE_FILE_PATTERNS.find {|rexp| rexp.match(f)}}
