@@ -6,6 +6,7 @@ require 'json'
 BYTES_TO_HASH = 1_000_000
 
 IGNORE_FILE_PATTERNS = [
+  %r[^\._]
 ]
 
 def main(root)
