@@ -21,9 +21,12 @@ class Auditor
   def report
     names = get_filenames
     $stderr.puts
-    @progress_bar = ProgressBar.create(title: 'Hashing', total: names.length, output: $stderr)
+
+    init_progress_bar(names.length)
     files = names.map {|f| filedata(f)}
+
     $stderr.puts
+
     {
       root: root,
       timestamp: Time.now,
@@ -32,6 +35,15 @@ class Auditor
   end
 
   private
+
+  def init_progress_bar(count)
+    @progress_bar = ProgressBar.create(
+      title: 'Hashing',
+      total: count,
+      output: $stderr,
+      format: '|%B| %p%% %e %t',
+    )
+  end
 
   def get_filenames
     $stderr.puts
