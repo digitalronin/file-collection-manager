@@ -1,14 +1,12 @@
 #!/usr/bin/env ruby
 
 require 'bundler/setup'
-require 'digest/sha1'
 require 'json'
 require 'ruby-progressbar'
+require './lib/lib_file'
 
 class Auditor
   attr_reader :root, :progress_bar
-
-  BYTES_TO_HASH = 1_000_000
 
   IGNORE_FILE_PATTERNS = [
     %r[^\._]
@@ -56,13 +54,7 @@ class Auditor
 
   def filedata(filepath)
     progress_bar.increment
-    bytes = File.read(filepath, BYTES_TO_HASH)
-    {
-      path: filepath,
-      name: File.basename(filepath),
-      size: File.size(filepath),
-      sha1: bytes.nil? ? nil : Digest::SHA1.hexdigest(File.read(filepath, BYTES_TO_HASH))
-    }
+    LibFile.new(filepath).metadata()
   end
 
 end
