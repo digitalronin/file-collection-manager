@@ -68,4 +68,17 @@ class Auditor
 end
 
 dir = ARGV.shift
+
+if dir.nil?
+  puts <<~USAGE
+
+  Invoke this script, supplying a directory as the only argument.
+
+  The output (to STDOUT) will be a JSON manifest of all files
+  stored in or below the supplied root directory.
+
+  USAGE
+  exit
+end
+
 puts Auditor.new(dir).report.to_json
