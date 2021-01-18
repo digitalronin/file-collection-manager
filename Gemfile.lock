@@ -1,13 +1,13 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    ruby-progressbar (1.10.1)
+    ruby-progressbar (1.11.0)
 
 PLATFORMS
-  ruby
+  x86_64-darwin-19
 
 DEPENDENCIES
   ruby-progressbar
 
 BUNDLED WITH
-   1.17.2
+   2.2.5
